@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css" />
+<title>Estimote</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
+  <meta property="og:title" content="">
+  <meta property="og:image" content="">
+  <meta property="og:url" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:description" content="">
+
+  <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,700|Roboto:400,900" rel="stylesheet">
+
+  <!-- Bootstrap CSS File -->
+  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Main Stylesheet File -->
+  <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="css/theme-2.css" />
+<script src="js/jquery.js"></script>
+<script src="js/jquery.audioControls.min.js"></script>
+<script type="text/javascript">
+		$(document).ready(function(e){
+			$("#playListContainer").audioControls({
+				autoPlay : false,
+				timer: 'increment',
+				onAudioChange : function(response){
+					$('.songPlay').text(response.title + ' ...');
+				},
+				onVolumeChange : function(vol){
+					var obj = $('.volume');
+					if(vol <= 0){
+						obj.attr('class','volume mute');
+					} else if(vol <= 33){
+						obj.attr('class','volume volume1');
+					} else if(vol > 33 && vol <= 66){
+						obj.attr('class','volume volume2');
+					} else if(vol > 66){
+						obj.attr('class','volume volume3');
+					} else {
+						obj.attr('class','volume volume1');
+					}
+				}
+			});
+			var play=0;
+			var pause=0;
+			$("#play").on("click",function(){
+				$("#play").removeClass("play");
+				$("#play").addClass("playClick");
+				$("#pause").removeClass("pauseClick");
+				$("#pause").addClass("pause");
+				audioGlobal._audio.volume=$("#inivol").text();
+				audioGlobal._audio.play();
+			});
+			$("#pause").on("click",function(){
+				$("#pause").removeClass("pause");
+				$("#pause").addClass("pauseClick");
+				$("#play").removeClass("playClick");
+				$("#play").addClass("play");
+				audioGlobal._audio.pause();
+			});
+			$.confirm({
+				title: 'Confirma!',
+				content: 'Este página quiere reproducir un sonido, está de acuerdo en reproducirlo?',
+				buttons: {
+					aceptar: function () {
+						audioGlobal._audio.play();
+						audioGlobal._audio.volume=$("#inivol").text();
+						$("#play").removeClass("play");
+						$("#play").addClass("playClick");
+						$("#play").removeAttr("data-attr");
+					},
+					cancelar: function () {
+						return;
+					}
+				}
+			});
+			$("#volumemin").on("click",function(){
+				var vol=parseFloat($("#inivol").text());
+				vol=vol-0.1;
+				if(vol==parseFloat("0.0")){
+					$("#volumez").addClass("volumemute");
+					$("#volumez").removeClass("volumez");
+					audioGlobal._audio.volume=0.0;
+					$("#inivol").text("0.0");
+				}
+				else if(vol>parseFloat("0.0")){
+					audioGlobal._audio.volume=vol;
+					$("#inivol").text(vol.toFixed(1));
+				}
+				
+			});
+			$("#volumez").on("click",function(){
+				var nameClass=$("#volumez").attr("class");
+				if(nameClass=="volumez"){
+					$("#volumez").addClass("volumemute");
+					$("#volumez").removeClass("volumez");
+					audioGlobal._audio.volume=0.0;
+				}
+				else{
+					$("#volumez").addClass("volumez");
+					$("#volumez").removeClass("volumemute");
+					audioGlobal._audio.volume=parseFloat($("#inivol").text());;
+				}
+			});
+			$("#volumemax").on("click",function(){
+				var vol=parseFloat($("#inivol").text());
+				console.log(audioGlobal._audio.volume);
+				vol=vol+0.1;
+				if(vol==parseFloat("0.0") || audioGlobal._audio.volume==parseFloat("0.0")){
+					$("#volumez").addClass("volumez");
+					$("#volumez").removeClass("volumemute");
+					audioGlobal._audio.volume=vol;
+					$("#inivol").text(vol.toFixed(1));
+				}
+				else if(vol<=parseFloat("1.0")){
+					audioGlobal._audio.volume=vol;
+					$("#inivol").text(vol.toFixed(1));
+				}
+				
+			});
+		});
+		
+	</script>
+  <!-- =======================================================
+    Theme Name: Bell
+    Theme URL: https://bootstrapmade.com/bell-free-bootstrap-4-template/
+    Author: BootstrapMade.com
+    Author URL: https://bootstrapmade.com
+  ======================================================= -->
+</head>
+
+<body>
+  <!-- Page Content
+    ================================================== -->
+  <!-- Hero -->
+
+  
+  <!-- /Hero -->
+
+  <!-- Header -->
+  <header id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4" style="text-align: center"><img src="images/logo_blanco.fw.png" alt="" width="auto" height="auto" class="imagen-h"/></div>
+            <div class="col-4"></div>
+<!--      <div id="logo" class="pull-left">
+        <a href="index.html"><img src="img/logo-nav.png" alt="" title="" /></img></a>-->
+        <!-- Uncomment below if you prefer to use a text image -->
+        <!--<h1><a href="#hero">Bell</a></h1>-->
+      <!--</div>-->
+
+<!--      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li><a href="/index.php/site/index">Inicio</a></li>
+          <li><a href="/index.php/site/contact">Audio 2</a></li>
+          <li><a href="/index.php/site/page/view/about">Audio 3</a></li>
+        </ul>
+      </nav>-->
+      <!-- #nav-menu-container -->
+
+<!--      <nav class="nav social-nav pull-right d-none d-lg-inline">
+        <a href="#"><i class="fa fa-twitter"></i></a> <a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i class="fa fa-linkedin"></i></a> <a href="#"><i class="fa fa-envelope"></i></a>
+      </nav>-->
+    </div>
+  </header>
+  <!-- #header -->
+
+  <!-- About -->
+
+ 
+  <!-- /Call to Action -->
+  <!-- Portfolio -->
+
+  <section class="portfolio" id="portfolio">
+  <div id="content">
+	<!--<audio src="" controls autoplay loop>
+<p>Tu navegador no implementa el elemento audio</p>
+</audio>-->
+<div class="row">
+    <div class="col-12" style="text-align: center;font-size: 30px;color:#0D5EB1">Muerte Muisca</div>
+    <div class="col-12" style="text-align: center;font-size: 14px;color:#A3A3A3">Exposición</div>
+</div>
+<div style="margin: 30px 0px;"></div>
+<div class="container">
+  <!-- Content here -->
+          <div class="row">
+            <div class="col-md-6">
+                <img class="img-demo" src="images/muertemuisca/imagen1.fw.png" alt=""/>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-demo" src="images/muertemuisca/imagen2.fw.png" alt=""/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-demo" src="images/muertemuisca/imagen3.fw.png" alt=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mainContainer">
+			<div class="containerPlayer">
+				<div id="listContainer" class="playlistContainer" style="display:none">
+					<ul id="playListContainer">
+						<li data-src="media/indigena_museo.wav">
+							<a href="#">
+								La muerte Muisca
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div id="playerContainer">
+					
+					<div style="padding-bottom:30px">
+						<ul class="controls" style="padding-left:30px;">
+									<li>
+									<a href="#" class="volumez" id="volumez"></a>
+									</li>
+									<li>
+									<a href="#" class="volumemin" id="volumemin"></a>
+									</li>
+									<li>
+									<a href="#" class="volumemax" id="volumemax"></a>
+									</li>
+						</ul>
+						<div id="inivol" style="display:none">0.5</div>
+						<br>
+						
+					</div>		
+					<div id="controlContainer">
+						
+						<div class="progress">
+							<div data-attr="seekableTrack" class="seekableTrack"></div>
+							<div class="updateProgress"></div>
+						</div>
+						<div class="audioDetails">
+							<span class="songPlay"></span>
+							<span data-attr="timer" class="audioTime"></span>
+						</div>
+						<div class="controlsDiv" style="margin:0 auto;">
+							<ul class="controls">
+								<li>
+								<a href="#" class="left" data-attr="prevAudio"></a>
+								</li>
+								<li>
+								<a href="#" class="play" id="play"></a>
+								</li>
+								<li>
+								<a href="#" class="pause" id="pause"></a>
+								</li>
+								<li>
+								<a href="#" class="right" data-attr="nextAudio"></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+  </div>
+  </div>
+	
+  <!-- content -->
+  </section>
+
+  <footer class="site-footer">
+    <div class="bottom">
+      <div class="container">
+        <div class="row">
+
+          
+
+          
+
+        </div>
+      </div>
+    </div>
+  </footer>
+  <a class="scrolltop" href="#"><span class="fa fa-angle-up"></span></a>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+</body>
+</html>
